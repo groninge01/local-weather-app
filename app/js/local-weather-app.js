@@ -20,47 +20,22 @@ var symbolTemperature = symbolCelsius;
   s.parentNode.insertBefore(link_element, s);
 })();
 
+var result = fetch('//freegeoip.net/json/').then(function(response) {
+  return response.json();
+}).then(function(data) {
+    var lat = data.latitude;
+    var lon = data.longitude;
+    var url = baseUrlWeather + "lat=" + lat + "&lon=" + lon + apiKey + units;
+    return fetch(url);
+ })
+ .then(function(response) {
+      return response.json();
+  })
+  .catch(function(error) {
+          console.log('There has been a problem with your fetch operation: ' + error.message);
+  })
 
-var weatherData = fetch('//api.openweathermap.org/data/2.5/weather?lat=52.6446&lon=4.755&appid=e20788d5fc9f29f44032bd1ac7ca73d3&units=metric').then(function(response) {
-	// Convert to JSON
-  var j = response.json();
-  console.log(j);
-  return j;
-  }).catch(function(error) {
-  console.log('There has been a problem with your fetch operation: ' + error.message);
-});
-
-weatherData.then(function(data) {
-    console.log(data);
-  });
-
-var geoData = fetch('//freegeoip.net/json/').then(function(response) {
-	// Convert to JSON
-	return response.json();
-});
-
-var lat,lon;
-
-geoData.then(function(data) {
-  lat = data.latitude;
-  lon = data.longitude;
- }).then(function() {
-  var url = baseUrlWeather + "lat=" + lat + "&lon=" + lon + apiKey + units;
-  console.log(url);
-
-});
-
-
-
-
-//console.log(geoData);
-
-
-$(document).ready(function() {
-
-
-  console.log("weather done?");
-
-
-
+  // I'm using the result variable to show that you can continue to extend the chain from the returned promise
+result.then(function(r) {
+    console.log(r); // 2nd request result
 });

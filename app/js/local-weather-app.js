@@ -6,7 +6,7 @@ var symbolFahrenheit = "&deg;F";
 var symbolCelsius = " &deg;C";
 var temperature;
 var symbolTemperature = symbolCelsius;
-var tbody = document.getElementById('tbody');
+var div = document.getElementById('weather');
 
 // Google font function
 (function() {
@@ -22,12 +22,29 @@ var tbody = document.getElementById('tbody');
 })();
 
 // Helper functions
-function createNode(element) {
-  return document.createElement(element); // Create the type of element you pass in the parameters
+function changeTempUnit(id){
+  //Get contents off element clicked
+  var content = document.getElementById(id).firstChild.nodeValue;
+  var degrees = content.slice(0,5);
+  var isF = content.slice(-1);
+  var newContent;
+  if (isF == "F") {
+    degrees = cToF(degrees);
+    newContent = degrees + " " + symbolFahrenheit + " | " + symbolCelsius;
+  } else {
+    degrees = fToC(degrees);
+    newContent = degrees + " " + symbolCelsius + " | " + symbolFahrenheit;
+  }
+  //Set new content of element clicked
+  document.getElementById(id).innerHTML = newContent;
 }
 
-function append(parent, el) {
-  return parent.appendChild(el); // Append the second parameter(element) to the first one
+function cToF(degrees) {
+  return (degrees * 1.8 + 32).toFixed(2);
+}
+
+function fToC(degrees) {
+  return ((degrees - 32) * .5556).toFixed(2);
 }
 
 // Main
@@ -55,16 +72,20 @@ result.then(function(r) {
     var d = new Date(r.dt * 1000);
     var sunRise = new Date(r.sys.sunrise * 1000);
     var sunSet = new Date(r.sys.sunset * 1000);
-    var tr = "<tr>";
-    tr += "<td colspan=2>Weather in " + r.name + ", " + r.sys.country + "<br>";
-    tr += "<img src=" + icon + ">" + r.main.temp + symbolCelsius + "|" + symbolFahrenheit + "<br>";
-    tr += r.weather[0].description + "<br>";
-    tr += d.toTimeString().slice(0,5) + d.toDateString().slice(3,10) + "</td></tr>";
-    tr += "<tr><td>Wind</td><td>" + r.wind.speed + " m/s, " + r.wind.deg + "</td></tr>";
-    tr += "<tr><td>Pressure</td><td>" + r.main.pressure + " hpa</td></tr>";
-    tr += "<tr><td>Humidity</td><td>" + r.main.humidity + " %</td></tr>";
-    tr += "<tr><td>Sunrise</td><td>" + sunRise.toTimeString().slice(0,5) + "</td></tr>";
-    tr += "<tr><td>Sunset</td><td>" + sunSet.toTimeString().slice(0,5) + "</td></tr>";
 
-    tbody.innerHTML += tr;
+    var content = "";
+    content += "<div class='container'>";
+    content += "<div class='row'><div class='twelve columns'><h4>Weather in " + r.name + ", " + r.sys.country + ".</h4></div></div>";
+    content += "<div class='row'><div class='two columns'><img src=" + icon + "></div>";
+    content += "<div class='ten columns'><span class='button' id='txtTemperature' onclick='changeTempUnit(this.id);'>" + r.main.temp + symbolCelsius + " | " + symbolFahrenheit + "</span></div></div>";
+    content += "<div class='row'><div class='twelve columns'>" + r.weather[0].description + "</div></div>";
+    content += "<div class='row'><div class='twelve columns'>" + d.toTimeString().slice(0,5) + d.toDateString().slice(3,10) + "</div></div>";
+    content += "<div class='row'><div class='twelve columns'><table><tbody><content><td>Wind</td><td>" + r.wind.speed + " m/s, " + r.wind.deg + "</td></tr>";
+    content += "<tr><td>Pressure</td><td>" + r.main.pressure + " hpa</td></tr>";
+    content += "<tr><td>Humidity</td><td>" + r.main.humidity + " %</td></tr>";
+    content += "<tr><td>Sunrise</td><td>" + sunRise.toTimeString().slice(0,5) + "</td></tr>";
+    content += "<tr><td>Sunset</td><td>" + sunSet.toTimeString().slice(0,5) + "</td></tr></tbody>";
+    content += "<tfoot><tr><td colspan=2><h6>Fetched from <a href='http://openweathermap.org/' target='_blank'>OpenWeatherMap</a>.</h6></td></tr></tfoot></table></div></div></div>"
+
+    div.innerHTML += content;
 });

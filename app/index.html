@@ -32,7 +32,81 @@
   <!-- Primary Page Layout
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
 
-        <div id="weather"></div>
+
+  <div class="container">
+     <div class="row">
+       <div class="one-half column">
+         <h4>Weather in <span id="city"></span>, <span id="country"></span></h4>
+       </div>
+     </div>
+     <div class="row">
+       <div class="one-half column">
+         <span id="time"></span>
+       </div>
+     </div>
+     <div class="row">
+        <div class="one-half column">
+          <span id="weatherIcon"></span><br>
+          <span id="weatherDescription"></span>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="one-half column">
+          <table>
+            <tbody>
+              <tr>
+                <td>Temperature</td>
+                <td>
+                  <button id="txtTemperature" onclick="changeTempUnit(this.id);">
+                    <span id="temperature"></span>
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td>Wind</td>
+                <td>
+                  <span id="windSpeed"></span> m/s,
+                  <span id="windDirection"></span>
+                </td>
+              </tr>
+              <tr>
+                <td>Pressure</td>
+                <td>
+                  <span id="pressure"></span> hpa
+                </td>
+              </tr>
+              <tr>
+                <td>Humidity</td>
+                <td>
+                  <span id="humidity"></span> %
+                </td>
+              </tr>
+              <tr>
+                <td>Sunrise</td>
+                <td>
+                  <span id="sunrise"><span>
+                  </td>
+              </tr>
+              <tr>
+                <td>Sunset</td>
+                <td>
+                  <span id="sunset"></span>
+                </td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan=2>
+                  <h6>Fetched from <a href="http://openweathermap.org/" target="_blank">OpenWeatherMap</a>.</h6>
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+
+        </div>
+      </div>
+    </div>
 
 
 <!-- End Document

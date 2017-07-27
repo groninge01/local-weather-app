@@ -10,7 +10,7 @@ var windDirections = ["N","NNE","NE","ENE","E","ESE","SE","SSE","S","SSW","SW","
 function changeTempUnit(id){
   //Get contents off element clicked
   content = document.getElementById(id).innerText;
-  var degrees = content.slice(0,5);
+  var degrees = content.slice(0,-3);
   var isC = content.slice(-1);
   var newContent;
   if (isC === "C") {
@@ -25,11 +25,11 @@ function changeTempUnit(id){
 }
 
 function cToF(degrees) {
-  return (degrees * 1.8 + 32).toFixed(2);
+  return (degrees * 1.8 + 32).toFixed(0);
 }
 
 function fToC(degrees) {
-  return ((degrees - 32) * .5556).toFixed(2);
+  return ((degrees - 32) * .5556).toFixed(0);
 }
 
 function getWindDirection(degrees) {
@@ -69,7 +69,7 @@ result.then(function(r) {
     setContent('city',r.name);
     setContent('country',r.sys.country);
     setContent('weatherIcon',"<img class='u-max-full-width' src=" + icon + ">");
-    setContent('temperature',r.main.temp + symbolCelsius);
+    setContent('temperature',r.main.temp.toFixed(0) + symbolCelsius);
     setContent('weatherDescription',r.weather[0].description);
     setContent('time',d.toTimeString().slice(0,5) + d.toDateString().slice(3,10));
     setContent('windSpeed',r.wind.speed);
